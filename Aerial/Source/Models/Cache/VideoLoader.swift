@@ -160,7 +160,7 @@ class VideoLoader: NSObject, NSURLConnectionDataDelegate {
     func connectionDidFinishLoading(_ connection: NSURLConnection) {
 
         queue.async { () -> Void in
-            debugLog("connectionDidFinishLoading")
+//            debugLog("connectionDidFinishLoading")
             self.loadingRequest.finishLoading()
         }
     }

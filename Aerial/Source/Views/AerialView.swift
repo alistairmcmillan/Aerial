@@ -246,7 +246,7 @@ class AerialView: ScreenSaverView {
             return
         }
         
-        debugLog("observing current item \(currentItem)")
+//        debugLog("observing current item \(currentItem)")
         notificationCenter.addObserver(self,
                                        selector: #selector(AerialView.playerItemDidReachEnd(_:)),
                                        name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,

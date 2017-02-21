@@ -81,6 +81,7 @@ class ManifestLoader {
         // use ephemeral session so when we load json offline it fails and puts us in offline mode
         let configuration = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: configuration)
+        debugLog("Attempting to download fresh manifest from \(url)")
         let task = session.dataTask(with: url, completionHandler: completionHandler)
         task.resume()
     }

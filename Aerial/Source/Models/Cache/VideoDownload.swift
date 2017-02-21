@@ -236,7 +236,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
     
     func connectionDidFinishLoading(_ connection: NSURLConnection) {
         queue.async { () -> Void in
-            debugLog("connectionDidFinishLoading")
+//            debugLog("connectionDidFinishLoading")
             
             guard let stream = self.streamForConnection(connection) else {
                 debugLog("Aerial Error: No matching stream for connection: \(connection)")

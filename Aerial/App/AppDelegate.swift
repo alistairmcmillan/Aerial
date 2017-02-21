@@ -15,6 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     lazy var preferencesWindowController: PreferencesWindowController = PreferencesWindowController()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        debugLog("applicationDidFinishLaunching")
         let objects = objectsFromNib(loadNibNamed: "PreferencesWindow")
         
         guard let windowIndex = objects.index(where: { $0 is NSWindow }),
@@ -27,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func setUp(preferencesWindow window: NSWindow) {
+        debugLog("setUp")
         window.makeKeyAndOrderFront(self)
         window.styleMask = [
             NSTitledWindowMask,
@@ -40,6 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func objectsFromNib(loadNibNamed nibName: String) -> [AnyObject] {
+        debugLog("objectsFromNib")
         let bundle = Bundle.main
         var topLevelObjects = NSArray()
         bundle.loadNibNamed(nibName,
