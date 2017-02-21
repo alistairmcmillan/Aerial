@@ -34,7 +34,7 @@ class ManifestLoader {
             let inRotation = preferences.videoIsInRotation(videoID: video.id)
             
             if !inRotation {
-                debugLog("video is disabled: \(video)")
+                debugLog("video is disabled: \(video.name)")
                 continue
             }
             
@@ -56,16 +56,17 @@ class ManifestLoader {
         // start loading right away!
         let completionHandler = { (data: Data?, response: URLResponse?, error: Error?) -> Void in
             if let error = error {
-                NSLog("Aerial Error Loading Manifest: \(error)")
+                debugLog("Aerial Error Loading Manifest: \(error)")
                 self.loadSavedManifest()
                 return
             }
             
             guard let data = data else {
-                NSLog("Couldn't load manifest!")
+                debugLog("Couldn't load manifest!")
                 self.loadSavedManifest()
                 return
             }
+            debugLog("Loaded fresh manifest")
             self.preferences.manifest = data
             
             DispatchQueue.main.async(execute: { () -> Void in
@@ -90,6 +91,7 @@ class ManifestLoader {
             return
         }
         
+        debugLog("Loaded saved manifest")
         offlineMode = true
         readJSONFromData(savedJSON)
     }
@@ -130,7 +132,7 @@ class ManifestLoader {
             
             self.loadedManifest = videos
         } catch {
-            NSLog("Aerial: Error retrieving content listing.")
+            debugLog("Aerial: Error retrieving content listing.")
             return
         }
     }
@@ -147,7 +149,7 @@ class ManifestLoader {
             video.contentLengthChecked = true
             
             if let error = error {
-                NSLog("error fetching content length: \(error)")
+                debugLog("error fetching content length: \(error)")
                 DispatchQueue.main.async(execute: { () -> Void in
                     self.receivedContentLengthResponse()
                 })
@@ -159,7 +161,7 @@ class ManifestLoader {
             }
             
             video.contentLength = Int(response.expectedContentLength)
-//            NSLog("content length: \(response.expectedContentLength)")
+//            debugLo("content length: \(response.expectedContentLength)")
             DispatchQueue.main.async(execute: { () -> Void in
                 self.receivedContentLengthResponse()
             })
@@ -207,7 +209,7 @@ class ManifestLoader {
                 }
                 
                 if videoCheck.contentLength == video.contentLength {
-//                    NSLog("removing duplicate video \(videoCheck.name) \(videoCheck.timeOfDay)")
+//                    debugLog("removing duplicate video \(videoCheck.name) \(videoCheck.timeOfDay)")
                     isDuplicate = true
                     break
                 }

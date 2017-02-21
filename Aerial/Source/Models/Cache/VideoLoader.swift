@@ -57,7 +57,7 @@ class VideoLoader: NSObject, NSURLConnectionDataDelegate {
         connection = NSURLConnection(request: request as URLRequest, delegate: self, startImmediately: false)
         
         guard let connection = connection else {
-            NSLog("Aerial error: Couldn't instantiate connection.")
+            debugLog("Aerial error: Couldn't instantiate connection.")
             return
         }
         
@@ -97,7 +97,7 @@ class VideoLoader: NSObject, NSURLConnectionDataDelegate {
             self.fillInContentInformation(self.loadingRequest)
             
             guard let dataRequest = self.loadingRequest.dataRequest else {
-                NSLog("Aerial Error: Data request missing for \(self.loadingRequest)")
+                debugLog("Aerial Error: Data request missing for \(self.loadingRequest)")
                 return
             }
             let requestedRange = self.requestedRange
@@ -145,7 +145,7 @@ class VideoLoader: NSObject, NSURLConnectionDataDelegate {
                         self.connection?.cancel()
                     }
                 } else if inset < 1 {
-                    NSLog("Aerial Error: Inset is invalid value: \(inset)")
+                    debugLog("Aerial Error: Inset is invalid value: \(inset)")
                 }
                 
             }
@@ -208,7 +208,7 @@ class VideoLoader: NSObject, NSURLConnectionDataDelegate {
             regex = try NSRegularExpression(pattern: "bytes (\\d+)-\\d+/\\d+",
                                             options: NSRegularExpression.Options.caseInsensitive)
         } catch let error as NSError {
-            NSLog("Aerial: Error formatting regex: \(error)")
+            debugLog("Aerial: Error formatting regex: \(error)")
             return nil
         }
         

@@ -90,7 +90,7 @@ class AerialView: ScreenSaverView {
     func setupPlayerLayer(withPlayer player: AVPlayer) {
         self.layer = CALayer()
         guard let layer = self.layer else {
-            NSLog("Aerial Errror: Couldn't create CALayer")
+            debugLog("Aerial Errror: Couldn't create CALayer")
             return
         }
         self.wantsLayer = true
@@ -143,7 +143,7 @@ class AerialView: ScreenSaverView {
         }
         
         guard let player = localPlayer else {
-            NSLog("Aerial Error: Couldn't create AVPlayer!")
+            debugLog("Aerial Error: Couldn't create AVPlayer!")
             return
         }
         
@@ -173,17 +173,17 @@ class AerialView: ScreenSaverView {
     // MARK: - AVPlayerItem Notifications
     
     func playerItemFailedtoPlayToEnd(_ aNotification: Notification) {
-        NSLog("AVPlayerItemFailedToPlayToEndTimeNotification \(aNotification)")
+        debugLog("AVPlayerItemFailedToPlayToEndTimeNotification \(aNotification)")
         
         playNextVideo()
     }
     
     func playerItemNewErrorLogEntryNotification(_ aNotification: Notification) {
-        NSLog("AVPlayerItemNewErrorLogEntryNotification \(aNotification)")
+        debugLog("AVPlayerItemNewErrorLogEntryNotification \(aNotification)")
     }
     
     func playerItemPlaybackStalledNotification(_ aNotification: Notification) {
-        NSLog("AVPlayerItemPlaybackStalledNotification \(aNotification)")
+    //    debugLog("AVPlayerItemPlaybackStalledNotification \(aNotification)")
     }
     
     func playerItemDidReachEnd(_ aNotification: Notification) {
@@ -224,7 +224,7 @@ class AerialView: ScreenSaverView {
         let randomVideo = ManifestLoader.instance.randomVideo()
         
         guard let video = randomVideo else {
-            NSLog("Aerial: Error grabbing random video!")
+            debugLog("Aerial: Error grabbing random video!")
             return
         }
         let videoURL = video.url
@@ -242,7 +242,7 @@ class AerialView: ScreenSaverView {
         }
         
         guard let currentItem = player.currentItem else {
-            NSLog("Aerial Error: No current item!")
+            debugLog("Aerial Error: No current item!")
             return
         }
         

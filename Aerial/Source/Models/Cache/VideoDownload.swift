@@ -70,7 +70,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
         
         guard let connection = NSURLConnection(request: request as URLRequest,
                                                delegate: self, startImmediately: false) else {
-            NSLog("Aerial: Error creating connection with request: \(request)")
+            debugLog("Aerial: Error creating connection with request: \(request)")
             return
         }
         
@@ -140,7 +140,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
     
     func receiveDataForStream(_ stream: VideoDownloadStream, receivedData: Data) {
         guard let videoData = self.data else {
-            NSLog("Aerial error: video data missing!")
+            debugLog("Aerial error: video data missing!")
             return
         }
         
@@ -167,7 +167,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
         do {
             try videoData.write(toFile: videoCachePath, options: .atomicWrite)
         } catch let error {
-            NSLog("Aerial Error: Couldn't write cache file: \(error)")
+            debugLog("Aerial Error: Couldn't write cache file: \(error)")
             errorMessage = "Couldn't write to cache file!"
             success = false
         }
@@ -186,7 +186,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
     
     func connection(_ connection: NSURLConnection, didReceive response: URLResponse) {
         guard let stream = streamForConnection(connection) else {
-            NSLog("Aerial Error: No matching stream for connection: \(connection) with response: \(response)")
+            debugLog("Aerial Error: No matching stream for connection: \(connection) with response: \(response)")
             return
         }
         
@@ -206,7 +206,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
             
             queue.async(execute: { () -> Void in
                 guard let offset = self.startOffsetFromResponse(response) else {
-                    NSLog("Aerial Error: Couldn't get start offset from response: \(response)")
+                    debugLog("Aerial Error: Couldn't get start offset from response: \(response)")
                     return
                 }
                 
@@ -226,7 +226,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
             delegate.videoDownload(self, receivedBytes: data.count, progress: progress)
             
             guard let stream = self.streamForConnection(connection) else {
-                NSLog("Aerial Error: No matching stream for connection: \(connection)")
+                debugLog("Aerial Error: No matching stream for connection: \(connection)")
                 return
             }
             
@@ -239,12 +239,12 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
             debugLog("connectionDidFinishLoading")
             
             guard let stream = self.streamForConnection(connection) else {
-                NSLog("Aerial Error: No matching stream for connection: \(connection)")
+                debugLog("Aerial Error: No matching stream for connection: \(connection)")
                 return
             }
             
             guard let index = self.streams.index(where: { $0.connection == stream.connection }) else {
-                NSLog("Aerial Error: Couldn't find index of stream for finished connection!")
+                debugLog("Aerial Error: Couldn't find index of stream for finished connection!")
                 return
             }
             
@@ -258,14 +258,14 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
     }
     
     func connection(_ connection: NSURLConnection, didFailWithError error: Error) {
-        NSLog("Aerial Error: Couldn't download video: \(error)")
+        debugLog("Aerial Error: Couldn't download video: \(error)")
         queue.async { () -> Void in
             self.failedDownload("Connection fail: \(error)")
         }
     }
     
     func connection(_ connection: NSURLConnection, didReceive challenge: URLAuthenticationChallenge) {
-        NSLog("Aerial Error: Didn't expect authentication challenge while downloading videos!")
+        debugLog("Aerial Error: Didn't expect authentication challenge while downloading videos!")
         queue.async { () -> Void in
             self.failedDownload("Connection fail: Received authentication request!")
         }
@@ -280,7 +280,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
             regex = try NSRegularExpression(pattern: "bytes (\\d+)-\\d+/\\d+",
                                             options: NSRegularExpression.Options.caseInsensitive)
         } catch let error as NSError {
-            NSLog("Aerial: Error formatting regex: \(error)")
+            debugLog("Aerial: Error formatting regex: \(error)")
             return nil
         }
         

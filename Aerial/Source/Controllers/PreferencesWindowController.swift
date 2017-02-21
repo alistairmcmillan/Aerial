@@ -500,11 +500,11 @@ NSOutlineViewDelegate, VideoDownloadDelegate {
             return
         }
         
-        NSLog("uncached: \(uncached)")
+        debugLog("uncached: \(uncached)")
         
         totalProgress.maxValue = Double(manifestVideos.count)
         totalProgress.doubleValue = Double(manifestVideos.count) - Double(uncached.count)
-        NSLog("total process max value: \(totalProgress.maxValue), current value: \(totalProgress.doubleValue)")
+        debugLog("total process max value: \(totalProgress.maxValue), current value: \(totalProgress.doubleValue)")
         
         let video = uncached[0]
         
@@ -527,12 +527,12 @@ NSOutlineViewDelegate, VideoDownloadDelegate {
             cacheNextVideo()
         }
         
-         NSLog("video download finished with success: \(success))")
+         debugLog("video download finished with success: \(success))")
     }
     
     func videoDownload(_ videoDownload: VideoDownload, receivedBytes: Int, progress: Float) {
         currentProgress.doubleValue = Double(progress)
-//     NSLog("received bytes: \(receivedBytes), progress: \(progress)")
+//     debugLog("received bytes: \(receivedBytes), progress: \(progress)")
     }
     
 }
